@@ -23,7 +23,7 @@ This is the backend API for a full-stack Healthcare Management System built with
 - **Django REST Framework**
 - **djangorestframework-simplejwt** (for JWT auth)
 - **django-cors-headers**
-- **SQLite** (development) / **PostgreSQL** (production)
+- **PostgreSQL** (production)
 - **Docker** & **Docker Compose**
 
 ---
@@ -185,4 +185,3 @@ python manage.py runserver
 ## 🙌 Author
 
 Built by **Ayaz Alam**  
-Feel free to fork, star ⭐, and contribute!
