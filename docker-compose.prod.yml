@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: healthcare_backend_prod
+    restart: always
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - healthcare-network-prod
+
+  db:
+    image: postgres:15
+    container_name: healthcare_db_prod
+    restart: always
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - healthcare-network-prod
+
+  nginx:
+    build: ./nginx
+    container_name: healthcare_nginx
+    restart: always
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+    networks:
+      - healthcare-network-prod
+
+networks:
+  healthcare-network-prod:
+    driver: bridge
+
+volumes:
+  postgres_data_prod:
+  static_volume:
+  media_volume: 
