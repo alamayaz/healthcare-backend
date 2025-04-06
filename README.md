@@ -139,48 +139,6 @@ You can modify the following environment variables in the `.env` file:
 - `DJANGO_SUPERUSER_PASSWORD`: Admin password
 - `DJANGO_SUPERUSER_EMAIL`: Admin email
 
-## 🚀 Production Deployment
-
-For production deployment, use the production Docker configuration which includes:
-
-- Multi-stage build for smaller image size
-- Nginx for serving static files and as a reverse proxy
-- SSL/TLS support via Let's Encrypt certificates
-- Gunicorn as the WSGI server
-
-### Deploying to Production
-
-1. Set up your production .env file (use .env.example as a template)
-   ```bash
-   cp .env.example .env
-   # Edit .env with production values
-   ```
-
-2. Update the Nginx configuration in `nginx/nginx.conf`
-   - Replace `localhost` with your domain name
-   - Uncomment HTTPS sections if using SSL
-
-3. Build and deploy with docker-compose:
-   ```bash
-   docker-compose -f docker-compose.prod.yml up -d --build
-   ```
-
-4. For SSL setup with Let's Encrypt:
-   ```bash
-   # Set up initial certificates
-   docker-compose -f docker-compose.prod.yml run --rm certbot certonly --webroot -w /var/www/certbot -d yourdomain.com -d www.yourdomain.com
-   
-   # Update the nginx config to use the certificates
-   # Uncomment the SSL section in nginx/nginx.conf
-   ```
-
-5. Automatic renewal can be set up with a cron job:
-   ```bash
-   0 12 * * * docker-compose -f /path/to/docker-compose.prod.yml run --rm certbot renew
-   ```
-
----
-
 ## 🔑 API Endpoints
 
 ### Auth
